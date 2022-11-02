@@ -15,7 +15,11 @@ mongoose.connect(dbURI)
     console.log("Mongoose connected to DB successfully");
     app.listen(3000, function (err) {
         if(err) console.log("Express failed to start: "+err)
-        console.log("Express server is listening on port 3000");
+        console.log(`Express server is listening on port 3000`);
     })
 })
 .catch((err) => console.log("Could not connect to database"));
+
+app.get('/', (req, res) => {
+    res.send('Hello, World');
+})
