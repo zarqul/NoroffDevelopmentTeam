@@ -1,11 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 // Initialise Express
 const app = express();
 
 // Database URI from MongoDB Atlas
-const dbURI = "";
+const dbURI = process.env.MongoURI;
 
 // Connect to database and start Express if connection is successful
 mongoose.connect(dbURI)
