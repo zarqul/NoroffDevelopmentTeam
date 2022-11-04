@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const axios = require('axios');
+const { assertWrappingType } = require('graphql');
 
 require('dotenv').config();
 
@@ -8,6 +9,7 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 const booksAPI = 'https://openlibrary.org/books/OL82586W.json';
+const booksAPIparams = 'https://openlibrary.org/books/'
 
 // Database URI from MongoDB Atlas
 const dbURI = process.env.MongoURI;
@@ -29,9 +31,21 @@ mongoose
 app.get('/', async (req, res) => {
   try {
     const response = await axios.get(booksAPI);
-    res.json(response.data);
+    console.log("Request", req.headers)
+    // res.json(response.data);
     console.log(`Book title: ${response.data.title}`);
   } catch (err) {
     console.log(err);
   }
 });
+
+app.get('/ISBN/:id', async (req, res) => {
+  try {
+    const response = await axios.get(booksAPIparams + req.params.id);
+    res.send(`Title for ISBN: ${req.params.id}\n\n Book title: ${response.data.title}`);
+  } catch (err) {
+    console.log(`No book with that ISBN number`);
+    res.status(500).send(`No book with that ISBN number`)
+  }
+})
+
